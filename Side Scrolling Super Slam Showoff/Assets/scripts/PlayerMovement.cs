@@ -53,16 +53,18 @@ public class PlayerMovement : MonoBehaviour {
 		if (Input.GetMouseButtonDown (0)) {
 			RaycastHit2D rayCast = Physics2D.Raycast(mousePos, Vector2.zero);
 			if(rayCast.collider == null) {
-				player.position = new Vector3(mousePos.x,mousePos.y,player.position.z);
-			} else {
+				//player.position = new Vector3(mousePos.x,mousePos.y,player.position.z);
+				//To test teleportation.
+			} else if(rayCast.collider.tag == "Ceiling") {
 				Debug.Log ("Struck something at: " + rayCast.collider.gameObject.transform.position);
+				player.position = new Vector3(mousePos.x,mousePos.y-3,player.position.z);
 			}
 			//Debug.Log("Position " + mousePos);
 		}
 		if (Input.GetKeyDown ("space") && jumping == false) {
 			Vector2 jump = new Vector2(0f,jumpheight);
-			rb2d.AddForce(jump);
+			rb2d.AddForce(jump, ForceMode2D.Impulse);
 		}
-		Debug.Log ("Jumping == " + jumping);
+		//Debug.Log ("Jumping = " + jumping);
 	}
 }
