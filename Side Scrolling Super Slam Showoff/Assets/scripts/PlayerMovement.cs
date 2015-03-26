@@ -21,26 +21,28 @@ public class PlayerMovement : MonoBehaviour {
 		float x = Input.GetAxis("Horizontal");
 		Vector2 pos = new Vector2 (x, 0f) * speed;
 		//Debug.Log (pos);
-		rb2d.AddForce(pos);
+		if (jumping == false) {
+			rb2d.AddForce (pos);
+		}
 	}
 
 
 	//Jump checks
-	void OnCollisionExit(Collision other)
-	{
+	void OnCollisionExit2D(Collision2D other){
 		jumping = true;
 		Debug.Log ("Touching is false");
 	}
 
-	void OnCollisionEnter(Collision other){
-		if (other.gameObject.tag == "Terrain" && jumping==true){
+	void OnCollisionEnter2D(Collision2D other){
+		if (other.gameObject.tag == "Terrain" && other.gameObject.transform.position.y < player.position.y){
 			jumping = false;
 			Debug.Log ("Touching is true");
 		}
 	}
 	
-	void OnCollisionStay(Collision other){
-		if (other.gameObject.tag == "Terrain" && jumping == true) {
+	void OnCollisionStay2D(Collision2D other){
+		if (other.gameObject.tag == "Terrain" && other.gameObject.transform.position.y < player.position.y && other.gameObject.transform.position.y + player.localScale.y == player.position.y)
+			 {
 			jumping = false;
 			Debug.Log ("Touching is true");
 		}
@@ -53,11 +55,9 @@ public class PlayerMovement : MonoBehaviour {
 		if (Input.GetMouseButtonDown (0)) {
 			RaycastHit2D rayCast = Physics2D.Raycast(mousePos, Vector2.zero);
 			if(rayCast.collider == null) {
-				//player.position = new Vector3(mousePos.x,mousePos.y,player.position.z);
-				//To test teleportation.
-			} else if(rayCast.collider.tag == "Ceiling") {
+				player.position = new Vector3(mousePos.x,mousePos.y,player.position.z);
+			} else {
 				Debug.Log ("Struck something at: " + rayCast.collider.gameObject.transform.position);
-				player.position = new Vector3(mousePos.x,mousePos.y-3,player.position.z);
 			}
 			//Debug.Log("Position " + mousePos);
 		}
