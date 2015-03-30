@@ -30,13 +30,13 @@ public class PlayerMovement : MonoBehaviour {
 	//Jump checks
 	void OnCollisionExit2D(Collision2D other){
 		jumping = true;
-		//Debug.Log ("Touching is false");
+		Debug.Log ("Touching is false");
 	}
 
 	void OnCollisionEnter2D(Collision2D other){
 		if (other.gameObject.tag == "Terrain"){
 			jumping = false;
-			//Debug.Log ("Touching is true");
+			Debug.Log ("Touching is true");
 		}
 	}
 	
@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (other.gameObject.tag == "Terrain" && other.gameObject.transform.position.y < player.position.y && other.gameObject.transform.position.y + player.localScale.y == player.position.y)
 			 {
 			jumping = false;
-			//Debug.Log ("Touching is true");
+			Debug.Log ("Touching is true");
 		}
 	}
 
@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour {
 	void Update()
 	{
 		Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-		RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+		RaycastHit2D hit = Physics2D.Raycast(player.position,mousePos);
 		if (Input.GetMouseButtonDown (0)) {
 			if(maxTeleports > 0){
 				if (hit.collider != null){
